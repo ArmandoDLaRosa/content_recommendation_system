@@ -269,3 +269,78 @@ In addition to providing a singular, highly relevant article recommendation each
  | Search         |                         +----------------+
  +----------------+
 ```
+
+
+## MVP - Single Article Recommendation
+
+### MAIN TOPIC VECTOR - Distributed Systems
+Distributed Systems encompass a broad array of technologies and concepts focused on managing and operating multiple interlinked computing nodes that work together to perform complex tasks. These systems are characterized by their scalability, reliability, and efficiency. Key aspects include:
+
+Scalability: Ability to handle increasing workloads by adding resources either horizontally (more nodes) or vertically (more powerful nodes).
+Concurrency: Managing multiple parts of a computation simultaneously to optimize processing speed.
+Fault Tolerance: Ensuring the system continues to operate even if one or more nodes fail.
+Load Balancing: Distributing work evenly across all nodes to prevent any single node from being overwhelmed, which ensures smooth operation and optimal resource utilization.
+Cloud Computing: Utilizing online computational resources that can be scaled and shared among users, often encompassing distributed databases and applications.
+Decentralization: Removing a central point of control or failure by distributing data and tasks across many locations.
+Synchronization: Managing the timing of processes so that operations across nodes are coordinated.
+Data Replication: Duplicating data across different nodes to increase reliability and accessibility.
+This topic vector encompasses the primary elements and challenges associated with designing, implementing, and managing distributed systems, targeting advancements and solutions that address these core areas.
+
+### NICHE WORDS - Construction
+Distributed Systems encompass a broad array of technologies and concepts focused on managing and operating multiple interlinked computing nodes that work together to perform complex tasks. These systems are characterized by their scalability, reliability, and efficiency. Key aspects include:
+
+Scalability: Ability to handle increasing workloads by adding resources either horizontally (more nodes) or vertically (more powerful nodes).
+Concurrency: Managing multiple parts of a computation simultaneously to optimize processing speed.
+Fault Tolerance: Ensuring the system continues to operate even if one or more nodes fail.
+Load Balancing: Distributing work evenly across all nodes to prevent any single node from being overwhelmed, which ensures smooth operation and optimal resource utilization.
+Cloud Computing: Utilizing online computational resources that can be scaled and shared among users, often encompassing distributed databases and applications.
+Decentralization: Removing a central point of control or failure by distributing data and tasks across many locations.
+Synchronization: Managing the timing of processes so that operations across nodes are coordinated.
+Data Replication: Duplicating data across different nodes to increase reliability and accessibility.
+This topic vector encompasses the primary elements and challenges associated with designing, implementing, and managing distributed systems, targeting advancements and solutions that address these core areas.
+
+### Diagram
+                                +-----------------------------+
+                                |     Random Query Generator  |
+                                |  (MAIN TOPIC VECTOR +     |
+                                |   NICHE Words)       |
+                                +--------------+--------------+
+                                               |
+                                               v
+                                +--------------+--------------+
+                                |         arXiv API          |
+                                |  (Fetch top 3 recent       |
+                                |   articles per query)      |
+                                +--------------+--------------+
+                                               |
+                                               | (15 articles)
+                                               v
+                                +--------------+--------------+
+                                |        Preprocessing        |
+                                |   (Tokenization, Encoding)  |
+                                +--------------+--------------+
+                                               |
+                                               | (Encoded texts)
+                                               v
+                                +--------------+--------------+
+                                |           BERT Model        |
+                                |  (Generate embeddings for   |
+                                |   each article summary)     |
+                                +--------------+--------------+
+                                               |
+                                               | (Embeddings)
+                                               v
+                                +--------------+--------------+
+                                |      Similarity Computation |
+                                |  (Compare embeddings to     |
+                                |   'Distributed Systems'     |
+                                |  MAIN topic vector)             |
+                                +--------------+--------------+
+                                               |
+                                               | (Best match)
+                                               v
+                                +--------------+--------------+
+                                |        Email System         |
+                                |  (Send recommended article  |
+                                |   to the user via email)    |
+                                +------------------------------+

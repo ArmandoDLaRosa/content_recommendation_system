@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>readme.md</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+html,footer,header{
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Custom MD PDF CSS
+ */
+html,footer,header{
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+
+ }
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+<link rel="stylesheet" href="file:///home/armando/repos/R%3A%5C2.Travail%5C1.Enseignement%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css"><link rel="stylesheet" href="file:///home/armando/repos/D%3A%5Crdaros%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css">
+</head>
+
+<body>
+    <h1 id="personalized-article-recommendation-system">Personalized Article Recommendation System</h1>
+<h2 id="overview">Overview</h2>
+<p>The Personalized Article Recommendation System is designed to revolutionize the reading experience by offering a singular, highly relevant article recommendation daily. Tailored to individual interests in specialized fields such as Distributed Systems, AI Scaling, Low-Level Engineering, and System Design, this system leverages advanced Natural Language Processing (NLP), dynamic feedback loops, and Retrieval-Augmented Generation (RAG) technologies. Our goal is to provide unparalleled personalization in content recommendation and discovery. By having Topic Vectors its able to search and discover new articles in the predefined sources that match those keywords mixed with niching words selected by the user.</p>
+<h2 id="key-features">Key Features</h2>
+<ul>
+<li><strong>Singular Daily Article Recommendation</strong>: Delivers one article per day, chosen for its relevance and alignment with the user's interests by ponderating<br>
+the most recent articles from all sources and delivering only the most relevant towards the interests.<br>
+We make sure it hasnt been read by the user and it's as recent as possible in the origin source.</li>
+<li><strong>Similar Article Discovery</strong>: Offers a selection of related articles to encourage exploration of topics in depth. Sortable by Most Recent.</li>
+<li><strong>RAG-Powered Search</strong>: Allows for natural language queries, enhancing the discovery of articles that match user interests closely. Sortable by Most Recent</li>
+<li><strong>User Feedback Integration</strong>: Utilizes direct user inputs and article rankings to continuously refine the recommendation process.</li>
+</ul>
+<h2 id="implementation-overview">Implementation Overview</h2>
+<h3 id="system-architecture">System Architecture</h3>
+<p>The architecture integrates various technologies, including Topic Model Vectors, Semantic Relevance Analysis, Text Similarity Clusters, a Vector Database (VectorDB), Retrieval-Augmented Generation (RAG), and User Feedback Mechanisms. These components work together to facilitate personalized article recommendations and enable effective content discovery.</p>
+<h3 id="technologies-and-methodologies">Technologies and Methodologies</h3>
+<h4 id="content-categorization">Content Categorization</h4>
+<ul>
+<li><strong>Purpose</strong>: To accurately tag articles with relevant topics, improving search and recommendation accuracy.</li>
+<li><strong>Implementation</strong>: Use of NLP models like BERT for extracting and categorizing article topics, ensuring precise association with user interests.</li>
+</ul>
+<h4 id="semantic-relevance--topic-model-vectors">Semantic Relevance &amp; Topic Model Vectors</h4>
+<ul>
+<li><strong>Purpose</strong>: To assess the relevance of articles to a user's specific interests, aiding the daily recommendation process.</li>
+<li><strong>Implementation</strong>: Generation of article embeddings with transformer models, stored in VectorDB for efficient similarity-based retrieval.</li>
+</ul>
+<h4 id="text-similarity-clusters">Text Similarity Clusters</h4>
+<ul>
+<li><strong>Purpose</strong>: To identify semantically related groups of articles, enriching the similar article discovery feature.</li>
+<li><strong>Implementation</strong>: Application of clustering algorithms on article embeddings to suggest related content, enhancing the exploration experience.</li>
+</ul>
+<h4 id="vectordb">VectorDB</h4>
+<ul>
+<li><strong>Purpose</strong>: To store and query vector embeddings of articles, serving as the system's data retrieval backbone.</li>
+<li><strong>Implementation</strong>: Deployment of a vector database capable of fast nearest neighbor searches (e.g., Elasticsearch or Milvus), facilitating real-time, similarity-based article retrieval.</li>
+</ul>
+<h4 id="retrieval-augmented-generation-rag">Retrieval-Augmented Generation (RAG)</h4>
+<ul>
+<li><strong>Purpose</strong>: To improve natural language search capabilities, enabling precise article discovery through user queries.</li>
+<li><strong>Implementation</strong>: Integration of RAG for query generation and similar article recommendations, combining retrieved information with generative modeling for nuanced understanding and response.</li>
+</ul>
+<h4 id="user-feedback-integration">User Feedback Integration</h4>
+<ul>
+<li><strong>Purpose</strong>: To refine the recommendation engine based on user interactions and feedback, ensuring continuous improvement.</li>
+<li><strong>Implementation</strong>: Development of a feedback loop that adjusts recommendation algorithms based on user ratings and inputs.</li>
+</ul>
+<h3 id="workflow-and-data-flow">Workflow and Data Flow</h3>
+<ol>
+<li><strong>Article Processing</strong>: Automatic preprocessing, categorization, and embedding generation for each article, followed by storage in VectorDB.</li>
+<li><strong>Daily Recommendation</strong>: Utilization of semantic relevance and user interest vectors to select the most pertinent article for each user daily.</li>
+<li><strong>Similar Article Discovery</strong>: Provision of related articles through text similarity analysis and RAG-powered recommendations, fostering content exploration.</li>
+<li><strong>User Feedback Collection</strong>: Incorporation of user feedback to fine-tune the recommendation process, enhancing personalization and relevance.</li>
+</ol>
+<h2 id="getting-started">Getting Started</h2>
+<p>This section should include detailed instructions on system setup, including environment configuration, dependencies installation, and initial data ingestion. Provide steps for starting the recommendation system, ensuring users can begin receiving personalized content recommendations efficiently.</p>
+<h2 id="extended-article-retention-and-discovery">Extended Article Retention and Discovery</h2>
+<h3 id="overview">Overview</h3>
+<p>In addition to providing a singular, highly relevant article recommendation each day, our system introduces an advanced feature for storing and discovering multiple articles. This capability allows users to engage with a curated selection of three articles daily, chosen based on their unique interests and search queries. This feature is designed to enrich the user's exploration experience, offering them the opportunity to dive deeper into their areas of interest.</p>
+<h3 id="implementation">Implementation</h3>
+<h4 id="storing-multiple-articles">Storing Multiple Articles</h4>
+<ul>
+<li><strong>Purpose</strong>: To augment the daily reading experience by providing users with additional articles that align closely with their interests, encouraging further exploration and engagement.</li>
+<li><strong>Implementation</strong>: Every day, alongside the primary article recommendation, the system automatically stores a selection of three additional articles. This selection is derived from sophisticated analysis of user-generated search queries, incorporating a blend of main topic interests and niche keywords. These articles are then stored in a dedicated section within the user's profile, allowing for easy access and exploration at their convenience.</li>
+</ul>
+<h4 id="technology-integration">Technology Integration</h4>
+<ul>
+<li><strong>Search Query Analysis</strong>: Utilizes advanced NLP techniques to analyze search queries, extracting main topic interests and niche keywords. This analysis guides the selection of additional articles, ensuring they are highly relevant to the user's expressed interests.</li>
+<li><strong>Article Selection Algorithm</strong>: Employs a combination of user interest profiles, past interactions, and semantic relevance evaluations to curate a list of three articles daily. This algorithm prioritizes content that not only matches the user's main interests but also introduces them to related topics and ideas.</li>
+<li><strong>User Interface Design</strong>: The dedicated section for stored articles is designed with user experience in mind, ensuring easy access and navigation. This allows users to seamlessly transition between their daily recommended article and their curated list of additional reads.</li>
+</ul>
+<h3 id="benefits">Benefits</h3>
+<ul>
+<li><strong>Enhanced User Engagement</strong>: By offering users more than just a singular daily recommendation, the system fosters a deeper level of engagement and interaction with the content.</li>
+<li><strong>Personalized Exploration</strong>: The curated selection of additional articles allows users to explore related topics in depth, facilitating a personalized exploration experience that goes beyond their initial queries.</li>
+<li><strong>Continuous Learning</strong>: This feature supports users in their quest for knowledge, providing them with multiple perspectives and insights on topics of interest. It encourages continuous learning and discovery within their preferred domains.</li>
+</ul>
+<h3 id="getting-started-with-extended-article-discovery">Getting Started with Extended Article Discovery</h3>
+<ul>
+<li><strong>Initial Setup</strong>: Detailed instructions on how to enable and configure the extended article retention feature within the system.</li>
+<li><strong>User Guide</strong>: A step-by-step guide for users on how to access and utilize the dedicated section for additional article exploration. Tips on how to make the most of this feature for personalized content discovery.</li>
+</ul>
+<h2 id="system-architecture">System Architecture</h2>
+<pre class="hljs"><code><div>
+[Content Sources] (e.g., arXiv, Medium)
+       |
+       | Articles fetched and processed
+       v
+[Content Processing Pipeline] (NLP Models for Categorization &amp; Embedding)
+       |
+       | Embeddings and metadata
+       v
+         [Vector Database (VectorDB)]-----------------+
+       |                   ^                         |
+       |                   | Similarity Searches     |
+       |                   | and Retrieval           |
+       v                   v                         |
+[Retrieval-Augmented Generation (RAG)]------&gt;[Recommendation Engine]
+       |                   ^                         |
+       |                   |                         |
+       | User Queries      | Feedback Loop           | Recommendations
+       |                   |                         |
+       v                   v                         v
+                      [User Interface]
+                        (Frontend)
+</div></code></pre>
+<h2 id="data-flow-diagram">Data Flow Diagram</h2>
+<pre class="hljs"><code><div>                             [Fetch Articles]
+                                  |
+                                  | (Articles for processing)
+                                  v
+                            [Preprocess Articles]
+                                  |
+                                  | (Cleaned and formatted articles)
+                                  v
+                       [Generate Embeddings (NLP)]
+                                  |
+      +---------------------------+---------------------------+
+      |                           |                           |
+      |                           |                           |
+      v                           v                           v
+[Store Embeddings]        [Identify Similar]             [User Feedback]
+  (in VectorDB)                 (Articles)                  (on Articles)
+      |                           |                           |
+      |                           |                           |
+      |      +--------------------+                           |
+      |      |                                                 |
+      +------&gt;              [RAG for Search] &lt;----------------+
+             |                     |
+             +----&gt; [Recommendation Engine] &lt;---+
+                               |
+                               | (Personalized recommendations)
+                               v
+                          [User Interface]
+</div></code></pre>
+<h2 id="component-interaction-diagram">Component Interaction Diagram</h2>
+<pre class="hljs"><code><div>            +------------------------------------------------+
+            |                    [User Interface]            |
+            |                        (FE)                    |
+            |                                                 |
++-----------v----------+                         +-----------v-----------+
+|   [Backend (BE)]     | &lt;------ APIs ------&gt;    | [RAG &amp; ML Models]     |
+| - API management     |                         | - Embedding generation|
+| - Auth &amp; session mgmt|                         | - Similarity matching |
+| - Feedback processing|                         | - Recommendation algo |
++-----------^----------+                         +-----------^-----------+
+            |                                                     |
+            |                                                     |
+            |                +---------------------+             |
+            +----------------&gt;  [Vector Database]  &lt;-------------+
+                             |       (DE)          |
+                             | - Article storage   |
+                             | - Embedding storage |
+                             | - Query processing  |
+                             +---------------------+
+</div></code></pre>
+<h2 id="how-each-section-works">How each section works?</h2>
+<h3 id="article-processing">Article Processing</h3>
+<pre class="hljs"><code><div>                      [Fetch Articles]
+                           |
+                           v
+                 [Preprocessing Pipeline]
+                /       |              \
+               v        v               v
+       [Tokenization] [Stopword] [Lemmatization]
+               \        |              /
+                v       v             v
+            [Combine Preprocessed Text]
+                           |
+                           v
+               [Generate Embeddings (BERT)]
+                           |
+                           v
+                 [Store in VectorDB]
+</div></code></pre>
+<h3 id="recommendation-generation-process">Recommendation Generation Process</h3>
+<pre class="hljs"><code><div>            [Start Recommendation Process]
+                           |
+                           v
+            [User Interest Profile Vector]
+                           |
+             +-------------+--------------+
+             |                            |
+             v                            v
+    [Fetch Candidate Articles]    [Check User History]
+             |                            |
+             +-------------+--------------+
+                           |
+                           v
+          [Compute Similarity Scores with RAG]
+                           |
+                           v
+                [Rank Articles Based on Score]
+                           |
+                           v
+                [Select Top-N Recommendations]
+                           |
+                           v
+                  [Present to User via UI]
+</div></code></pre>
+<h3 id="user-feedback-loop">User Feedback Loop</h3>
+<pre class="hljs"><code><div>              [User Interacts with Article]
+                           |
+                           v
+                  [Collect User Feedback]
+                           |
+            +--------------+--------------+
+            |                             |
+            v                             v
+    [Adjust User Profile]         [Re-rank Similar Articles]
+            |                             |
+            v                             v
+    [Update Recommendation]       [Store Feedback for Future Learning]
+            |                             |
+            +--------------+--------------+
+                           |
+                           v
+             [Refine Future Recommendations]
+</div></code></pre>
+<h3 id="full-system">Full System</h3>
+<pre class="hljs"><code><div>                              +---------------------+
+                              |   Enhanced Big      |
+                              |      Texts          |
+                              +----------+----------+
+                                         |
+                                         | Embedding Generation (BERT)
+                                         v
+                    +--------------------+--------------------+
+                    |              Vector Database              |
+                    | (Stores embeddings &amp; article metadata)    |
+                    +--------+---------------------+--------+
+                             |                     |
+         +-------------------+                     +-------------------+
+         |                                          |                  
+ +-------v-------+                          +-------v-------+    +-----+----+
+ |  Search Query |                          |  Fetch &amp; Rank |    | User     |
+ |  Construction +-------------------------&gt;+  Articles     +---&gt;+ Ranking  |
+ |  (with RAG)   |    (arXiv, Medium, etc.) |               |    | (1 to 5)  |
+ |               |                          +-------+-------+    +-----+----+
+ +-------+-------+                                  |                  |
+         |            Similar Articles              | Similar articles |
+         |            with RAG                      | with RAG         |
+         v                                          v                  |
+ +-------+--------+                         +-------+--------+        |
+ | Natural        |                         | Article-based  |&lt;-------+
+ | Language       |                         | Recommendations|
+ | Search         |                         +----------------+
+ +----------------+
+</div></code></pre>
+<h2 id="mvp---single-article-recommendation">MVP - Single Article Recommendation</h2>
+<h3 id="main-topic-vector---distributed-systems">MAIN TOPIC VECTOR - Distributed Systems</h3>
+<p>Distributed Systems encompass a broad array of technologies and concepts focused on managing and operating multiple interlinked computing nodes that work together to perform complex tasks. These systems are characterized by their scalability, reliability, and efficiency. Key aspects include:</p>
+<p>Scalability: Ability to handle increasing workloads by adding resources either horizontally (more nodes) or vertically (more powerful nodes).<br>
+Concurrency: Managing multiple parts of a computation simultaneously to optimize processing speed.<br>
+Fault Tolerance: Ensuring the system continues to operate even if one or more nodes fail.<br>
+Load Balancing: Distributing work evenly across all nodes to prevent any single node from being overwhelmed, which ensures smooth operation and optimal resource utilization.<br>
+Cloud Computing: Utilizing online computational resources that can be scaled and shared among users, often encompassing distributed databases and applications.<br>
+Decentralization: Removing a central point of control or failure by distributing data and tasks across many locations.<br>
+Synchronization: Managing the timing of processes so that operations across nodes are coordinated.<br>
+Data Replication: Duplicating data across different nodes to increase reliability and accessibility.<br>
+This topic vector encompasses the primary elements and challenges associated with designing, implementing, and managing distributed systems, targeting advancements and solutions that address these core areas.</p>
+<h3 id="niche-words---construction">NICHE WORDS - Construction</h3>
+<p>Distributed Systems encompass a broad array of technologies and concepts focused on managing and operating multiple interlinked computing nodes that work together to perform complex tasks. These systems are characterized by their scalability, reliability, and efficiency. Key aspects include:</p>
+<p>Scalability: Ability to handle increasing workloads by adding resources either horizontally (more nodes) or vertically (more powerful nodes).<br>
+Concurrency: Managing multiple parts of a computation simultaneously to optimize processing speed.<br>
+Fault Tolerance: Ensuring the system continues to operate even if one or more nodes fail.<br>
+Load Balancing: Distributing work evenly across all nodes to prevent any single node from being overwhelmed, which ensures smooth operation and optimal resource utilization.<br>
+Cloud Computing: Utilizing online computational resources that can be scaled and shared among users, often encompassing distributed databases and applications.<br>
+Decentralization: Removing a central point of control or failure by distributing data and tasks across many locations.<br>
+Synchronization: Managing the timing of processes so that operations across nodes are coordinated.<br>
+Data Replication: Duplicating data across different nodes to increase reliability and accessibility.<br>
+This topic vector encompasses the primary elements and challenges associated with designing, implementing, and managing distributed systems, targeting advancements and solutions that address these core areas.</p>
+<h3 id="diagram">Diagram</h3>
+<pre><code>                            +-----------------------------+
+                            |     Random Query Generator  |
+                            |  (MAIN TOPIC VECTOR +     |
+                            |   NICHE Words)       |
+                            +--------------+--------------+
+                                           |
+                                           v
+                            +--------------+--------------+
+                            |         arXiv API          |
+                            |  (Fetch top 3 recent       |
+                            |   articles per query)      |
+                            +--------------+--------------+
+                                           |
+                                           | (15 articles)
+                                           v
+                            +--------------+--------------+
+                            |        Preprocessing        |
+                            |   (Tokenization, Encoding)  |
+                            +--------------+--------------+
+                                           |
+                                           | (Encoded texts)
+                                           v
+                            +--------------+--------------+
+                            |           BERT Model        |
+                            |  (Generate embeddings for   |
+                            |   each article summary)     |
+                            +--------------+--------------+
+                                           |
+                                           | (Embeddings)
+                                           v
+                            +--------------+--------------+
+                            |      Similarity Computation |
+                            |  (Compare embeddings to     |
+                            |   'Distributed Systems'     |
+                            |  MAIN topic vector)             |
+                            +--------------+--------------+
+                                           |
+                                           | (Best match)
+                                           v
+                            +--------------+--------------+
+                            |        Email System         |
+                            |  (Send recommended article  |
+                            |   to the user via email)    |
+                            +------------------------------+
+</code></pre>
+
+</body>
+
+</html>
