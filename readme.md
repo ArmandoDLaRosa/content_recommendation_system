@@ -149,7 +149,7 @@ In addition to providing a singular, highly relevant article recommendation each
             +------------------------------------------------+
             |                    [User Interface]            |
             |                        (FE)                    |
-            |                                                 |
+            |                                                |
 +-----------v----------+                         +-----------v-----------+
 |   [Backend (BE)]     | <------ APIs ------>    | [RAG & ML Models]     |
 | - API management     |                         | - Embedding generation|
@@ -158,7 +158,7 @@ In addition to providing a singular, highly relevant article recommendation each
 +-----------^----------+                         +-----------^-----------+
             |                                                     |
             |                                                     |
-            |                +---------------------+             |
+            |                +---------------------+              |
             +---------------->  [Vector Database]  <-------------+
                              |       (DE)          |
                              | - Article storage   |
@@ -248,23 +248,23 @@ In addition to providing a singular, highly relevant article recommendation each
                                          | Embedding Generation (BERT)
                                          v
                     +--------------------+--------------------+
-                    |              Vector Database              |
-                    | (Stores embeddings & article metadata)    |
-                    +--------+---------------------+--------+
-                             |                     |
-         +-------------------+                     +-------------------+
+                    |              Vector Database            |
+                    | (Stores embeddings & article metadata)  |
+                    +--------+----------------------+---------+
+                             |                      |
+         +-------------------+                      +
          |                                          |                  
  +-------v-------+                          +-------v-------+    +-----+----+
  |  Search Query |                          |  Fetch & Rank |    | User     |
  |  Construction +------------------------->+  Articles     +--->+ Ranking  |
- |  (with RAG)   |    (arXiv, Medium, etc.) |               |    | (1 to 5)  |
+ |  (with RAG)   |    (arXiv, Medium, etc.) |               |    | (1 to 5) |
  |               |                          +-------+-------+    +-----+----+
  +-------+-------+                                  |                  |
          |            Similar Articles              | Similar articles |
          |            with RAG                      | with RAG         |
          v                                          v                  |
- +-------+--------+                         +-------+--------+        |
- | Natural        |                         | Article-based  |<-------+
+ +-------+--------+                         +-------+--------+         |
+ | Natural        |                         | Article-based  |<--------+
  | Language       |                         | Recommendations|
  | Search         |                         +----------------+
  +----------------+
@@ -302,15 +302,15 @@ This topic vector encompasses the primary elements and challenges associated wit
 ### Diagram
                                 +-----------------------------+
                                 |     Random Query Generator  |
-                                |  (MAIN TOPIC VECTOR +     |
-                                |   NICHE Words)       |
+                                |  (MAIN TOPIC VECTOR +       |
+                                |   NICHE Words)              |
                                 +--------------+--------------+
                                                |
                                                v
                                 +--------------+--------------+
-                                |         arXiv API          |
-                                |  (Fetch top 3 recent       |
-                                |   articles per query)      |
+                                |         arXiv API           |
+                                |  (Fetch top 3 recent        |
+                                |   articles per query)       |
                                 +--------------+--------------+
                                                |
                                                | (15 articles)
@@ -334,7 +334,7 @@ This topic vector encompasses the primary elements and challenges associated wit
                                 |      Similarity Computation |
                                 |  (Compare embeddings to     |
                                 |   'Distributed Systems'     |
-                                |  MAIN topic vector)             |
+                                |  MAIN topic vector)         |
                                 +--------------+--------------+
                                                |
                                                | (Best match)
@@ -343,4 +343,4 @@ This topic vector encompasses the primary elements and challenges associated wit
                                 |        Email System         |
                                 |  (Send recommended article  |
                                 |   to the user via email)    |
-                                +------------------------------+
+                                +-----------------------------+
