@@ -123,7 +123,7 @@ def generate_bert_vectors(entries: List[Tuple[str, str, str, Any, Any]]) -> np.n
     corpus = [entry[1] for entry in entries]
     return model.encode(corpus)
 
-def recommend_entries_bert(topic_vector: np.ndarray, entries: List[Tuple[str, str, str, Any, Any]], bert_matrix: np.ndarray, num_recommendations: int = 5) -> List[Tuple[str, str, str, str]]:
+def recommend_entries_bert(topic_vector: np.ndarray, entries: List[Tuple[str, str, str, Any, Any]], bert_matrix: np.ndarray, num_recommendations: int = 10) -> List[Tuple[str, str, str, str]]:
     """Recommend entries based on cosine similarity."""
     topic_embedding = np.array([topic_vector])
     similarity_scores = cosine_similarity(topic_embedding, bert_matrix).flatten()
@@ -161,10 +161,11 @@ def generate_email_content(recommendations: List[Tuple[str, str, str, str]]) -> 
         a { color: #1a73e8; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .summary { color: #555555; margin-top: 10px; }
+        .source { color: #777777; margin-top: 5px; font-style: italic; }
     </style>
     </head>
     <body>
-        <h2>Top 5 Recommended Papers and Blogs</h2>
+        <h2>Top 10 Recommended Papers and Blogs</h2>
         <ul>
     """
     for idx, entry in enumerate(recommendations, start=1):
@@ -173,7 +174,7 @@ def generate_email_content(recommendations: List[Tuple[str, str, str, str]]) -> 
             <strong>{entry[0]}</strong><br>
             <p class="summary">{entry[1]}</p>
             <a href="{entry[2]}">Read more</a><br>
-            <em>Source: {entry[3]}</em>
+            <span class="source">Source: {entry[3]}</span>
         </li>
         """
     email_message += """
@@ -200,7 +201,7 @@ def main() -> None:
     
     if new_papers:
         paper_bert_matrix = generate_bert_vectors(new_papers)
-        recommended_papers = recommend_entries_bert(topic_vector, new_papers, paper_bert_matrix, num_recommendations=5)
+        recommended_papers = recommend_entries_bert(topic_vector, new_papers, paper_bert_matrix, num_recommendations=10)
     else:
         recommended_papers = []
 
@@ -209,12 +210,12 @@ def main() -> None:
     new_blogs = save_entries_to_db(blogs)
     if new_blogs:
         blog_bert_matrix = generate_bert_vectors(new_blogs)
-        recommended_blogs = recommend_entries_bert(topic_vector, new_blogs, blog_bert_matrix, num_recommendations=5)
+        recommended_blogs = recommend_entries_bert(topic_vector, new_blogs, blog_bert_matrix, num_recommendations=10)
     else:
         recommended_blogs = []
 
     # Combine and select balanced recommendations
-    num_recommendations = 5
+    num_recommendations = 10
     recommendations = recommended_papers[:num_recommendations // 2] + recommended_blogs[:num_recommendations // 2]
 
     # If we don't have enough from either, fill in the rest
@@ -225,11 +226,11 @@ def main() -> None:
 
     random.shuffle(recommendations)
 
-    # Ensure we only have 5 recommendations
+    # Ensure we only have 10 recommendations
     recommendations = recommendations[:num_recommendations]
 
     # Generate and send email with balanced recommendations
-    email_subject = "Top 5 Recommended Papers and Blogs"
+    email_subject = "Top 10 Recommended Papers and Blogs"
     email_message = generate_email_content(recommendations)
     send_email(email_subject, email_message)
     logging.info("Email Sent")
