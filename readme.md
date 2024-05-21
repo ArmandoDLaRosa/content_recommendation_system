@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Personalized Article Recommendation System is designed to revolutionize the reading experience by offering a singular, highly relevant article recommendation daily. Tailored to individual interests in specialized fields such as Distributed Systems, AI Scaling, Low-Level Engineering, and System Design, this system leverages advanced Natural Language Processing (NLP), dynamic feedback loops, and Retrieval-Augmented Generation (RAG) technologies. Our goal is to provide unparalleled personalization in content recommendation and discovery. By having Topic Vectors it's able to search and discover new articles in the predefined sources that match those keywords mixed with niching words selected by the user.
+The Personalized Article Recommendation System is designed to revolutionize the reading experience by offering a singular, highly relevant article recommendation daily. Tailored to individual interests in specialized fields such as Distributed Systems, AI Scaling, Low-Level Engineering, and System Design, this system leverages advanced Natural Language Processing (NLP), dynamic feedback loops, and Retrieval-Augmented Generation (RAG) technologies. Our goal is to provide unparalleled personalization in content recommendation and discovery. By having Topic Vectors, it's able to search and discover new articles in the predefined sources that match those keywords mixed with niche words selected by the user.
 
 ## Key Features
 
@@ -11,11 +11,15 @@ The Personalized Article Recommendation System is designed to revolutionize the 
 - **RAG-Powered Search**: Allows for natural language queries, enhancing the discovery of articles that match user interests closely. Sortable by Most Recent.
 - **User Feedback Integration**: Utilizes direct user inputs and article rankings to continuously refine the recommendation process.
 
+## Idea of the App
+
+The Personalized Article Recommendation System aims to enhance user engagement and learning by providing tailored content recommendations based on individual interests. By analyzing user preferences and search behaviors, the system identifies relevant articles from various sources and delivers a daily recommendation that aligns with the user's specific fields of interest. This approach ensures users receive the most pertinent and recent articles, promoting continuous learning and exploration.
+
 ## Implementation Overview
 
 ### System Architecture
 
-The architecture integrates various technologies, including Topic Model Vectors, Semantic Relevance Analysis, Text Similarity Clusters, a Vector Database (VectorDB), Retrieval-Augmented Generation (RAG), and User Feedback Mechanisms. These components work together to facilitate personalized article recommendations and enable effective content discovery.
+The architecture integrates various technologies, including Topic Model Vectors, Semantic Relevance Analysis, Text Similarity Clusters, a Vector Database (VectorDB), Retrieval-Augmented Generation (RAG), User Feedback Mechanisms, and Knowledge Graphs. These components work together to facilitate personalized article recommendations and enable effective content discovery.
 
 ### Technologies and Methodologies
 
@@ -30,6 +34,10 @@ The architecture integrates various technologies, including Topic Model Vectors,
 #### Text Similarity Clusters
 - **Purpose**: To identify semantically related groups of articles, enriching the similar article discovery feature.
 - **Implementation**: Application of clustering algorithms on article embeddings to suggest related content, enhancing the exploration experience.
+
+#### Knowledge Graphs
+- **Purpose**: To leverage rich contextual relationships between entities (articles, authors, topics) for enhanced recommendations.
+- **Implementation**: Construction and traversal of a knowledge graph using libraries like `networkx`, integrating domain-specific knowledge and ensuring diverse and novel recommendations.
 
 #### VectorDB
 - **Purpose**: To store and query vector embeddings of articles, serving as the system's data retrieval backbone.
@@ -46,8 +54,8 @@ The architecture integrates various technologies, including Topic Model Vectors,
 ### Workflow and Data Flow
 
 1. **Article Processing**: Automatic preprocessing, categorization, and embedding generation for each article, followed by storage in VectorDB.
-2. **Daily Recommendation**: Utilization of semantic relevance and user interest vectors to select the most pertinent article for each user daily.
-3. **Similar Article Discovery**: Provision of related articles through text similarity analysis and RAG-powered recommendations, fostering content exploration.
+2. **Daily Recommendation**: Utilization of semantic relevance, knowledge graphs, and user interest vectors to select the most pertinent article for each user daily.
+3. **Similar Article Discovery**: Provision of related articles through text similarity analysis, knowledge graph traversal, and RAG-powered recommendations, fostering content exploration.
 4. **User Feedback Collection**: Incorporation of user feedback to fine-tune the recommendation process, enhancing personalization and relevance.
 
 ## Getting Started
@@ -98,7 +106,7 @@ In addition to providing a singular, highly relevant article recommendation each
        |                   | Similarity Searches     |
        |                   | and Retrieval           |
        v                   v                         |
-[Retrieval-Augmented Generation (RAG)]------>[Recommendation Engine]
+[Knowledge Graph]---->[Retrieval-Augmented Generation (RAG)]------>[Recommendation Engine]
        |                   ^                         |
        |                   |                         |
        | User Queries      | Feedback Loop           | Recommendations
@@ -152,7 +160,9 @@ In addition to providing a singular, highly relevant article recommendation each
 | - API management     |                         | - Embedding generation|
 | - Auth & session mgmt|                         | - Similarity matching |
 | - Feedback processing|                         | - Recommendation algo |
-+-----------^----------+                         +-----------^-----------+
++-----------^----------+                         +-----------
+
+^-----------+
             |                                                     |
             |                                                     |
             |                +---------------------+              |
@@ -190,8 +200,6 @@ In addition to providing a singular, highly relevant article recommendation each
 ### Recommendation Generation Process
 
 ```plaintext
-
-
             [Start Recommendation Process]
                            |
                            v
@@ -441,8 +449,6 @@ def manhattan_dist(vec1, vec2):
 embedding1 = np.array([1, 2, 3])
 embedding2 = np.array([2, 3, 4])
 distance = manhattan_dist(embedding1, embedding2)
-
-
 print(f"Manhattan Distance: {distance:.4f}")
 ```
 
