@@ -72,7 +72,6 @@ BLOG_SOURCES = [
     "https://developers.googleblog.com/feed/",
     "https://developer.ibm.com/blogs/feed/",
     "https://blog.acolyer.org/feed/",
-    "https://www.statistics.com/blog/feed/",
     # Medium Tagged
     # Towards Data Science Tagged
     "https://towardsdatascience.com/feed/tagged/bayesian",
