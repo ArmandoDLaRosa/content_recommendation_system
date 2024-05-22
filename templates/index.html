@@ -13,15 +13,19 @@
         .paper p { color: #555555; margin-top: 10px; }
         .paper a { color: #1a73e8; text-decoration: none; }
         .paper a:hover { text-decoration: underline; }
-        .edit-button, .delete-button { margin-top: 10px; background-color: #e8b732; }
-        .delete-button { background-color: #e83232; }
+        .edit-button, .delete-button { margin-top: 10px; }
+        .delete-button { background-color: #e83232; color: white; }
         .recommendation-card { background-color: #fff; padding: 15px; margin: 10px 0; border-radius: 5px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
         .recommendation-card h5 { margin-bottom: 10px; }
+        .summary img { max-width: 100px; max-height: 100px; }
+        .loading { display: none; text-align: center; }
     </style>
 </head>
 <body>
     <div class="container">
         <h2 class="my-4">Paper Manager</h2>
+        <div class="alert alert-success" id="successMessage" style="display: none;"></div>
+        <div class="alert alert-danger" id="errorMessage" style="display: none;"></div>
         <form id="paperForm" class="mb-4">
             <input type="hidden" id="paperId">
             <div class="form-group">
@@ -61,7 +65,24 @@
         </div>
         <input type="text" id="searchQuery" class="form-control mb-3" placeholder="Search...">
         <button onclick="searchPapers()" class="btn btn-info mb-3">Search</button>
+        <div id="loading" class="loading">
+            <img src="assets/loading.gif" alt="Loading...">
+        </div>
         <div id="paperList"></div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination" id="pagination">
+                <li class="page-item" id="prevPage">
+                    <a class="page-link" href="#" aria-label="Previous" onclick="prevPage()">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" id="nextPage">
+                    <a class="page-link" href="#" aria-label="Next" onclick="nextPage()">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
     <div id="recommendationModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -87,8 +108,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
-        document.getElementById('paperForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        let currentPage = 1;
+        let totalPages = 1;
+
+        async function submitPaperForm(event) {
+            event.preventDefault();
             const paperId = document.getElementById('paperId').value;
             const newPaper = {
                 title: document.getElementById('title').value,
@@ -98,28 +122,30 @@
                 pubDate: document.getElementById('pubDate').value,
             };
 
-            if (paperId) {
-                await fetch(`/papers/${paperId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newPaper),
-                });
-            } else {
-                await fetch('/papers', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newPaper),
-                });
-            }
+            const method = paperId ? 'PUT' : 'POST';
+            const url = paperId ? `/papers/${paperId}` : '/papers';
 
-            document.getElementById('paperForm').reset();
-            document.getElementById('paperId').value = '';
-            fetchPapers();
-        });
+            try {
+                showLoading();
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newPaper),
+                });
+                if (!response.ok) throw new Error('Failed to save paper');
+                document.getElementById('paperForm').reset();
+                document.getElementById('paperId').value = '';
+                fetchPapers();
+                showMessage('Paper saved successfully!', 'success');
+            } catch (error) {
+                console.error('Error saving paper:', error);
+                showMessage('Failed to save paper. Please try again.', 'danger');
+            } finally {
+                hideLoading();
+            }
+        }
 
         async function fetchPapers(page = 1) {
             const sortBy = document.getElementById('sort').value;
@@ -132,8 +158,21 @@
                 url += `&source=${source}`;
             }
 
-            const response = await fetch(url);
-            const papers = await response.json();
+            try {
+                showLoading();
+                const response = await fetch(url);
+                const data = await response.json();
+                renderPapers(data.papers);
+                renderPagination(data.page, data.total_pages);
+            } catch (error) {
+                console.error('Error fetching papers:', error);
+                showMessage('Failed to fetch papers. Please try again.', 'danger');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function renderPapers(papers) {
             const paperList = document.getElementById('paperList');
             paperList.innerHTML = '';
             papers.forEach(paper => {
@@ -141,7 +180,7 @@
                 paperDiv.className = 'paper';
                 paperDiv.innerHTML = `
                     <strong>${paper.title}</strong><br>
-                    <p>${paper.summary}</p>
+                    <p class="summary">${paper.summary}</p>
                     <a href="${paper.link}" target="_blank">Read more</a><br>
                     <em>Source: ${paper.source} | Date: ${new Date(paper.pubDate).toLocaleString()}</em>
                     <button class="edit-button btn btn-warning mt-2" onclick="editPaper(${paper.id})">Edit</button>
@@ -152,100 +191,160 @@
             });
         }
 
+        function renderPagination(page, total) {
+            currentPage = page;
+            totalPages = total;
+            const prevPageItem = document.getElementById('prevPage');
+            const nextPageItem = document.getElementById('nextPage');
+            
+            prevPageItem.classList.toggle('disabled', currentPage === 1);
+            nextPageItem.classList.toggle('disabled', currentPage === totalPages);
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                fetchPapers(currentPage - 1);
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                fetchPapers(currentPage + 1);
+            }
+        }
+
         async function editPaper(id) {
-            const response = await fetch(`/papers/${id}`);
-            const paper = await response.json();
-            document.getElementById('paperId').value = paper.id;
-            document.getElementById('title').value = paper.title;
-            document.getElementById('summary').value = paper.summary;
-            document.getElementById('link').value = paper.link;
-            document.getElementById('source').value = paper.source;
-            document.getElementById('pubDate').value = new Date(paper.pubDate).toISOString().slice(0, -1);
+            try {
+                const response = await fetch(`/papers/${id}`);
+                const paper = await response.json();
+                document.getElementById('paperId').value = paper.id;
+                document.getElementById('title').value = paper.title;
+                document.getElementById('summary').value = paper.summary;
+                document.getElementById('link').value = paper.link;
+                document.getElementById('source').value = paper.source;
+                document.getElementById('pubDate').value = new Date(paper.pubDate).toISOString().slice(0, -1);
+            } catch (error) {
+                console.error('Error editing paper:', error);
+                showMessage('Failed to load paper details. Please try again.', 'danger');
+            }
         }
 
         async function deletePaper(id) {
             if (confirm('Are you sure you want to delete this paper?')) {
-                await fetch(`/papers/${id}`, {
-                    method: 'DELETE',
-                });
-                fetchPapers();
+                try {
+                    showLoading();
+                    await fetch(`/papers/${id}`, {
+                        method: 'DELETE',
+                    });
+                    fetchPapers();
+                    showMessage('Paper deleted successfully!', 'success');
+                } catch (error) {
+                    console.error('Error deleting paper:', error);
+                    showMessage('Failed to delete paper. Please try again.', 'danger');
+                } finally {
+                    hideLoading();
+                }
             }
         }
 
         async function fetchSources() {
-            const response = await fetch('/sources');
-            const sources = await response.json();
-            const sourceFilter = document.getElementById('sourceFilter');
-            sources.forEach(source => {
-                const option = document.createElement('option');
-                option.value = source;
-                option.text = source;
-                sourceFilter.appendChild(option);
-            });
+            try {
+                const response = await fetch('/sources');
+                const sources = await response.json();
+                const sourceFilter = document.getElementById('sourceFilter');
+                sources.forEach(source => {
+                    const option = document.createElement('option');
+                    option.value = source;
+                    option.text = source;
+                    sourceFilter.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching sources:', error);
+                showMessage('Failed to fetch sources. Please try again.', 'danger');
+            }
         }
 
         async function searchPapers() {
             const query = document.getElementById('searchQuery').value;
-            const response = await fetch(`/papers/search?query=${query}`);
-            const papers = await response.json();
-            const paperList = document.getElementById('paperList');
-            paperList.innerHTML = '';
-            papers.forEach(paper => {
-                const paperDiv = document.createElement('div');
-                paperDiv.className = 'paper';
-                paperDiv.innerHTML = `
-                    <strong>${paper.title}</strong><br>
-                    <p>${paper.summary}</p>
-                    <a href="${paper.link}" target="_blank">Read more</a><br>
-                    <em>Source: ${paper.source} | Date: ${new Date(paper.pubDate).toLocaleString()}</em>
-                    <button class="edit-button btn btn-warning mt-2" onclick="editPaper(${paper.id})">Edit</button>
-                    <button class="delete-button btn btn-danger mt-2" onclick="deletePaper(${paper.id})">Delete</button>
-                    <button class="btn btn-info mt-2" onclick="showRecommendations(${paper.id})">Show Recommendations</button>
-                `;
-                paperList.appendChild(paperDiv);
-            });
+            try {
+                showLoading();
+                const response = await fetch(`/papers/search?query=${query}`);
+                const papers = await response.json();
+                renderPapers(papers);
+            } catch (error) {
+                console.error('Error searching papers:', error);
+                showMessage('Failed to search papers. Please try again.', 'danger');
+            } finally {
+                hideLoading();
+            }
         }
 
         async function showRecommendations(id) {
-            const response = await fetch(`/papers/${id}/recommendations`);
-            const data = await response.json();
+            try {
+                showLoading();
+                const response = await fetch(`/papers/${id}/recommendations`);
+                const data = await response.json();
 
-            const recentRecommendations = data.recent;
-            const oldRecommendations = data.old;
+                const recentRecommendations = data.recent;
+                const oldRecommendations = data.old;
 
-            const recentDiv = document.getElementById('recentRecommendations');
-            const oldDiv = document.getElementById('oldRecommendations');
-            
-            recentDiv.innerHTML = '<h5>Most Recent Similar Papers:</h5>';
-            oldDiv.innerHTML = '<h5>Oldest Similar Papers:</h5>';
+                const recentDiv = document.getElementById('recentRecommendations');
+                const oldDiv = document.getElementById('oldRecommendations');
+                
+                recentDiv.innerHTML = '<h5>Most Recent Similar Papers:</h5>';
+                oldDiv.innerHTML = '<h5>Oldest Similar Papers:</h5>';
 
-            recentRecommendations.forEach(paper => {
-                const paperDiv = document.createElement('div');
-                paperDiv.className = 'recommendation-card';
-                paperDiv.innerHTML = `
-                    <strong>${paper.title}</strong><br>
-                    <p>${paper.summary}</p>
-                    <a href="${paper.link}" target="_blank">Read more</a><br>
-                    <em>Source: ${paper.source} | Date: ${new Date(paper.pubDate).toLocaleString()}</em>
-                `;
-                recentDiv.appendChild(paperDiv);
-            });
+                recentRecommendations.forEach(paper => {
+                    const paperDiv = document.createElement('div');
+                    paperDiv.className = 'recommendation-card';
+                    paperDiv.innerHTML = `
+                        <strong>${paper.title}</strong><br>
+                        <p class="summary">${paper.summary}</p>
+                        <a href="${paper.link}" target="_blank">Read more</a><br>
+                        <em>Source: ${paper.source} | Date: ${new Date(paper.pubDate).toLocaleString()}</em>
+                    `;
+                    recentDiv.appendChild(paperDiv);
+                });
 
-            oldRecommendations.forEach(paper => {
-                const paperDiv = document.createElement('div');
-                paperDiv.className = 'recommendation-card';
-                paperDiv.innerHTML = `
-                    <strong>${paper.title}</strong><br>
-                    <p>${paper.summary}</p>
-                    <a href="${paper.link}" target="_blank">Read more</a><br>
-                    <em>Source: ${paper.source} | Date: ${new Date(paper.pubDate).toLocaleString()}</em>
-                `;
-                oldDiv.appendChild(paperDiv);
-            });
+                oldRecommendations.forEach(paper => {
+                    const paperDiv = document.createElement('div');
+                    paperDiv.className = 'recommendation-card';
+                    paperDiv.innerHTML = `
+                        <strong>${paper.title}</strong><br>
+                        <p class="summary">${paper.summary}</p>
+                        <a href="${paper.link}" target="_blank">Read more</a><br>
+                        <em>Source: ${paper.source} | Date: ${new Date(paper.pubDate).toLocaleString()}</em>
+                    `;
+                    oldDiv.appendChild(paperDiv);
+                });
 
-            $('#recommendationModal').modal('show');
+                $('#recommendationModal').modal('show');
+            } catch (error) {
+                console.error('Error fetching recommendations:', error);
+                showMessage('Failed to load recommendations. Please try again.', 'danger');
+            } finally {
+                hideLoading();
+            }
         }
 
+        function showMessage(message, type) {
+            const messageBox = type === 'success' ? document.getElementById('successMessage') : document.getElementById('errorMessage');
+            messageBox.innerText = message;
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 3000);
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        document.getElementById('paperForm').addEventListener('submit', submitPaperForm);
         fetchSources();
         fetchPapers();
     </script>
